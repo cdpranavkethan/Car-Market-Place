@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
@@ -16,15 +18,13 @@ import {
   BarChart,
   Layers,
 } from "lucide-react"
-import { Button } from "./components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./components/ui/accordion"
-import { Badge } from "./components/ui/badge"
-import { Card, CardContent } from "./components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
-import { features } from "@/data/features.jsx"
-import { container, item } from "@/lib/animations"
+import { Button } from "@/components/ui/button"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function App() {
+export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
@@ -48,12 +48,62 @@ export default function App() {
     setTheme(theme === "dark" ? "light" : "dark")
   }
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  }
+
+  const features = [
+    {
+      title: "Smart Automation",
+      description: "Automate repetitive tasks and workflows to save time and reduce errors.",
+      icon: <Zap className="size-5" />,
+    },
+    {
+      title: "Advanced Analytics",
+      description: "Gain valuable insights with real-time data visualization and reporting.",
+      icon: <BarChart className="size-5" />,
+    },
+    {
+      title: "Team Collaboration",
+      description: "Work together seamlessly with integrated communication tools.",
+      icon: <Users className="size-5" />,
+    },
+    {
+      title: "Enterprise Security",
+      description: "Keep your data safe with end-to-end encryption and compliance features.",
+      icon: <Shield className="size-5" />,
+    },
+    {
+      title: "Seamless Integration",
+      description: "Connect with your favorite tools through our extensive API ecosystem.",
+      icon: <Layers className="size-5" />,
+    },
+    {
+      title: "24/7 Support",
+      description: "Get help whenever you need it with our dedicated support team.",
+      icon: <Star className="size-5" />,
+    },
+  ]
+
   return (
     <div className="flex min-h-[100dvh] flex-col">
-      <header
-        className={`sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300 ${isScrolled ? "bg-background/80 shadow-sm" : "bg-transparent"}`}
-      >
-        <div className="container flex h-16 items-center justify-between">
+      <header className={`sticky top-4 z-50 w-full transition-all duration-300 px-4`}>
+        <div
+          className={`container mx-auto rounded-full backdrop-blur-lg ${
+            isScrolled ? "bg-background/80 shadow-md" : "bg-background/30"
+          } h-16 flex items-center justify-between px-6`}
+        >
           <div className="flex items-center gap-2 font-bold">
             <div className="size-8 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground">
               S
@@ -115,9 +165,9 @@ export default function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
+            className="md:hidden absolute top-20 inset-x-4 bg-background/95 backdrop-blur-lg border rounded-xl shadow-lg"
           >
-            <div className="container py-4 flex flex-col gap-4">
+            <div className="py-4 px-6 flex flex-col gap-4">
               <a href="#features" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Features
               </a>
@@ -145,10 +195,9 @@ export default function App() {
       </header>
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-20 md:py-32 lg:py-40 overflow-hidden">
+        <section className="w-full py-20 md:py-32 lg:py-40 overflow-hidden relative">
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_40%,transparent_100%)]"></div>
           <div className="container px-4 md:px-6 relative">
-            <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -219,8 +268,10 @@ export default function App() {
                 {[1, 2, 3, 4, 5].map((i) => (
                   <img
                     key={i}
-                    src={`https://placehold.co/120x60?text=Logo+${i}`}
+                    src="/placeholder-logo.svg"
                     alt={`Company logo ${i}`}
+                    width={120}
+                    height={60}
                     className="h-8 w-auto opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0"
                   />
                 ))}
@@ -275,7 +326,7 @@ export default function App() {
 
         {/* How It Works Section */}
         <section className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]"></div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_40%,transparent_100%)]"></div>
 
           <div className="container px-4 md:px-6 relative">
             <motion.div
@@ -433,7 +484,7 @@ export default function App() {
 
         {/* Pricing Section */}
         <section id="pricing" className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]"></div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_40%,transparent_100%)]"></div>
 
           <div className="container px-4 md:px-6 relative">
             <motion.div
