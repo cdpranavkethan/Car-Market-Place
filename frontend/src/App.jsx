@@ -1,20 +1,31 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import Home from "@/components/Home"
+import Signin from "@/components/Signin"
 
 export default function App() {
   return (
     <Router>
-    <div className="flex min-h-[100dvh] flex-col">
-        <Navbar />
-      <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-      </main>
-        <Footer />
-                </div>
+      <AppLayout />
     </Router>
+  )
+}
+
+function AppLayout() {
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/signin";
+
+  return (
+    <div className="flex min-h-[100dvh] flex-col">
+      {!isLoginPage && <Navbar />}
+      <main className="flex-1 px-4 md:px-6">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<Signin/>}/>
+        </Routes>
+      </main>
+      {!isLoginPage && <Footer />}
+    </div>
   )
 }

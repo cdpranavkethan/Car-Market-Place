@@ -3,7 +3,9 @@ import { motion } from "framer-motion"
 import { Menu, X, Moon, Sun, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
+import { Link } from "react-router-dom"
 import carImage from "../images/website-logo.webp"
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -35,10 +37,10 @@ export default function Navbar() {
           isScrolled ? "bg-background/80 shadow-md" : "bg-background/30"
         } h-16 flex items-center justify-between px-6`}
       >
-        <div className="flex items-center gap-2 font-bold">
-            <img src={carImage} alt="Car Logo" className="w-20 h-23" />
+        <Link to="/" className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity">
+            <img src={carImage} alt="Car Logo" className="w-20 h-23"/>
             <span>CARS24</span>
-          </div>
+        </Link>
         <nav className="hidden md:flex gap-8">
           <a
             href="#features"
@@ -70,9 +72,9 @@ export default function Navbar() {
             {mounted && theme === "dark" ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
-          <a href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link to="/signin" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Log in
-          </a>
+          </Link>
           <Button className="rounded-full">
             Get Started
             <ChevronRight className="ml-1 size-4" />
@@ -108,9 +110,9 @@ export default function Navbar() {
               FAQ
             </a>
             <div className="flex flex-col gap-2 pt-2 border-t">
-              <a href="#" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/signin" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Log in
-              </a>
+              </Link>
               <Button className="rounded-full">
                 Get Started
                 <ChevronRight className="ml-1 size-4" />
