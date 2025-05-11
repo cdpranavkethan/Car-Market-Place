@@ -13,9 +13,9 @@ const Signin = () => {
     return(
         <div className="flex flex-col items-center justify-center min-h-screen gap-6 bg-background -mt-20">
             <div className="flex flex-col items-center font-bold hover:opacity-80 transition-opacity">
-                <div className="flex items-center gap-2">
+                <Link to="/" className="flex items-center gap-2">
                     <img src={carImage} alt="Car Logo" className="h-28 w-auto"/>
-                </div>
+                </Link>
                 <h1 className="text-2xl font-bold">Sign in</h1>
             </div>
             
