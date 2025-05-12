@@ -6,44 +6,58 @@ import { useState } from "react"
 import carImage from "../images/website-logo.webp"
 import googleLogo from "../images/google Logo.png"
 import { motion } from "framer-motion"
-import {useNavigate} from "react-router-dom"
-
-
+import { useNavigate } from "react-router-dom"
+import { useToast } from "@/hooks/use-toast"
 
 const Signin = () => {
+    const [formData, setFormData] = useState({})
+    const navigate = useNavigate()
+    const { toast } = useToast()
 
-    const [formData,setFormData]=useState({})
-    const navigate= useNavigate()
-    const handleChange=(e)=>{
+    const handleChange = (e) => {
         setFormData({
             ...formData,
-            [e.target.id] : e.target.value
+            [e.target.id]: e.target.value
         })
     }
-    const handleSubmit=async (e)=>{
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const res=await fetch('/api/auth/signin',{
-                method:'POST',
-                headers:{
-                    'Content-Type' : 'application/json'
+        try {
+            const res = await fetch('/api/auth/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                body:JSON.stringify(formData)
+                body: JSON.stringify(formData)
             })
-            const data=await res.json()
-            console.log(data)
-            if(data.success===true && data.token){
-                localStorage.setItem('access_token', data.token)
-                navigate('/')
-            }
+            const data = await res.json()
             
-        }catch(err){
-            console.log("server error")
+            if (data.success === true && data.token) {
+                localStorage.setItem('access_token', data.token)
+                toast({
+                    title: "Success",
+                    description: "Login successful!",
+                    variant: "default"
+                })
+               navigate('/')
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Error Signing In",
+                    description: data.message || "Something went wrong"
+                })
+            }
+        } catch (err) {
+            toast({
+                variant: "destructive",
+                title: "Error Signing In",
+                description: "Server error occurred"
+            })
         }
     }
 
-
-    return(
+    return (
         <div className="flex flex-col items-center justify-center min-h-screen gap-6 bg-background -mt-20">
             <div className="flex flex-col items-center font-bold hover:opacity-80 transition-opacity">
                 <Link to="/" className="flex items-center gap-2">

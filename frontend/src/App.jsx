@@ -4,6 +4,9 @@ import Footer from "@/components/Footer"
 import Home from "@/components/Home"
 import Signin from "@/components/Signin"
 import SignUp from "@/components/SignUp"
+import Account from "@/components/Account"
+import { Toaster } from "@/components/ui/toaster"
+
 export default function App() {
   return (
     <Router>
@@ -24,9 +27,11 @@ function AppLayout() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin/>}/>
           <Route path="/signup" element={<SignUp/>}/>
+          <Route path="/account" element={<Account/>}/>
         </Routes>
       </main>
       {!isLoginPage && <Footer />}
+      <Toaster />
     </div>
   )
 }
