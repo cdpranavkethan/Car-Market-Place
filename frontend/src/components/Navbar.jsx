@@ -11,6 +11,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [isLoggedIn,setLoggedIn] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -21,7 +22,9 @@ export default function Navbar() {
         setIsScrolled(false)
       }
     }
-
+    const token = localStorage.getItem('access_token')
+    setLoggedIn(!!token)
+    
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -72,13 +75,22 @@ export default function Navbar() {
             {mounted && theme === "dark" ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
-          <Link to="/signin" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Log in
-          </Link>
-          <Button className="rounded-full">
-            Get Started
-            <ChevronRight className="ml-1 size-4" />
-          </Button>
+          {isLoggedIn ? (
+            <Button className="rounded-full">
+              Menu
+              {/* You can add a dropdown or user avatar here */}
+            </Button>
+          ) : (
+            <>
+              <Link to="/signin" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                Log in
+              </Link>
+              <Button className="rounded-full">
+                Get Started
+                <ChevronRight className="ml-1 size-4" />
+              </Button>
+            </>
+          )}
         </div>
         <div className="flex items-center gap-4 md:hidden">
           

@@ -19,7 +19,7 @@ function AppLayout() {
   return (
     <div className="flex min-h-[100dvh] flex-col">
       {!isLoginPage && <Navbar />}
-      <main className="flex-1 px-4 md:px-6">
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin/>}/>

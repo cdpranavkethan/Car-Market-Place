@@ -6,10 +6,43 @@ import { useState } from "react"
 import carImage from "../images/website-logo.webp"
 import googleLogo from "../images/google Logo.png"
 import { motion } from "framer-motion"
+import {useNavigate} from "react-router-dom"
 
 
 
 const Signin = () => {
+
+    const [formData,setFormData]=useState({})
+    const navigate= useNavigate()
+    const handleChange=(e)=>{
+        setFormData({
+            ...formData,
+            [e.target.id] : e.target.value
+        })
+    }
+    const handleSubmit=async (e)=>{
+        e.preventDefault();
+        try{
+            const res=await fetch('/api/auth/signin',{
+                method:'POST',
+                headers:{
+                    'Content-Type' : 'application/json'
+                },
+                body:JSON.stringify(formData)
+            })
+            const data=await res.json()
+            console.log(data)
+            if(data.success===true && data.token){
+                localStorage.setItem('access_token', data.token)
+                navigate('/')
+            }
+            
+        }catch(err){
+            console.log("server error")
+        }
+    }
+
+
     return(
         <div className="flex flex-col items-center justify-center min-h-screen gap-6 bg-background -mt-20">
             <div className="flex flex-col items-center font-bold hover:opacity-80 transition-opacity">
@@ -26,7 +59,7 @@ const Signin = () => {
                 className="w-full max-w-md"
             >
                 <CardContent className="w-full bg-card rounded-2xl p-8 shadow-lg bg-[#191919] flex flex-col gap-6">
-                    <form className="flex flex-col gap-4">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 w-full">
                             <label htmlFor="email" className="text-sm font-medium">Email</label>
                             <Input 
@@ -36,17 +69,19 @@ const Signin = () => {
                                 placeholder="Enter your email"
                                 required 
                                 className="w-full h-10 text-sm"
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
-                            <label htmlFor="email" className="text-sm font-medium">Password</label>
+                            <label htmlFor="password" className="text-sm font-medium">Password</label>
                             <Input 
-                                id="email" 
-                                name="email"
-                                type="email" 
+                                id="password" 
+                                name="password"
+                                type="password" 
                                 placeholder="Enter your password"
                                 required 
                                 className="w-full h-10 text-sm"
+                                onChange={handleChange}
                             />
                         </div>
                         <Button type="submit" className="w-full h-10 text-base mt-2">Continue</Button>
